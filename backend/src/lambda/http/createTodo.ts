@@ -11,12 +11,14 @@ const logger = createLogger("todo");
 
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+    // this line when the http event hits the function
     console.log("Processing event: ", event);
 
-    // TODO: Implement creating a new TODO item
+    // filters the event body send from the request 
     const todoRequest: CreateTodoRequest = JSON.parse(event.body);
-
+    // create id for the todo from uuid looks like this 82813b0e-7eb2-40ec-88c1-f9f452e6a327
     const todoId = uuid.v4();
+    
     const jwtToken = decodeJWTFromAPIGatewayEvent(event);
 
     const userId = parseUserId(jwtToken);

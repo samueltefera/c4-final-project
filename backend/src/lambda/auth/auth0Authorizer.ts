@@ -86,5 +86,3 @@ export function certToPEM(cert) {
   cert = `-----BEGIN CERTIFICATE-----\n${cert}\n-----END CERTIFICATE-----\n`;
   return cert;
 }
-
-

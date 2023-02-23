@@ -6,7 +6,9 @@ import { UpdateTodoRequest } from "../requests/UpdateTodoRequest";
 
 const XAWS = AWSXRay.captureAWS(AWS);
 
+// class for all the data layers which are used to access the dynamodb tables the business logic instantiate this class 
 export class TodoAccess {
+  // attributes in the constructor are from the environment and docClient create new client to access the database
   constructor(
     private readonly docClient: DocumentClient = createDynamoDBClient(),
     private readonly todoTable = process.env.TODOS_TABLE,
@@ -17,7 +19,7 @@ export class TodoAccess {
       signatureVersion: "v4",
     })
   ) {}
-
+    // query all users todo from the database
   async getAllTodosForUser(userId: String): Promise<any> {
     const result = this.docClient
       .query({
@@ -33,6 +35,7 @@ export class TodoAccess {
     return result;
   }
 
+  // new todo on the table
   async createTodo(todo: Todo): Promise<Todo> {
     this.docClient
       .put({
@@ -136,6 +139,7 @@ export class TodoAccess {
   }
 }
 
+// creates new client to online deployed database ,if the environment variable IS_OFFLINE true it will create to the offline local version of the database
 function createDynamoDBClient() {
   if (process.env.IS_OFFLINE) {
     console.log("Creating a local DynamoDB instance");
